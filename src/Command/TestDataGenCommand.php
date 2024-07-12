@@ -35,6 +35,8 @@ class TestDataGenCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        //factories and faker... I know...
+
         //Book without author
         $book1 = new Book();
         $book1->setTitle($this->RandStr());
