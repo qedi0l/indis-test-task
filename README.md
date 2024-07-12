@@ -40,7 +40,7 @@
 Стандартный url `http://127.0.0.1`
 </details>
 
-<summary>Как поднять:</summary>
+<summary>Тестовое задание</summary>
 <details>
 Тестовое задание
 
