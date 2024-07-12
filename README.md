@@ -9,16 +9,17 @@
 
 <summary>Взаимодействие с API:</summary>
 <details>
-- book/create/{book_json} Принимает JSON строку содержащую title, releaseDate, bookPublisher, bookAuthor.
-- book/all Возвращает JSON (поля книг, авторы, издатели)
-- book/delete/{id} Принимает id книги.
+  
+- `book/create/{book_json}` Принимает JSON строку содержащую title, releaseDate, bookPublisher, bookAuthor.
+- `book/all` Возвращает JSON (поля книг, авторы, издатели).
+- `book/delete/{id}` Принимает id книги.
 
-- author/create/{author_json} Принимает JSON строку содержащую name, surname, books_ids[].
-- author/delete/{id} Принимает id автора.
+- `author/create/{author_json}` Принимает JSON строку содержащую name, surname, books_ids[].
+- `author/delete/{id}` Принимает id автора.
 
-- publisher/create/{publisher_json} Принимает JSON строку содержащую name, address, books_ids[].
-- publisher/update/{publisher_json} Принимает JSON строку содержащую (опционально) name, (опционально) address, (опционально) books_ids[].
-- publisher/delete/{id} Принимает id издателя.
+- `publisher/create/{publisher_json}` Принимает JSON строку содержащую name, address, books_ids[].
+- `publisher/update/{publisher_json}` Принимает JSON строку содержащую (опционально) name, (опционально) address, (опционально) books_ids[].
+- `publisher/delete/{id}` Принимает id издателя.
 </details>
 
 <summary>Команды консоли:</summary>
@@ -29,6 +30,7 @@
 
 <summary>Как поднять:</summary>
 <details>
+  
 - Репозиторий скачать и поместить в домашнюю директорию пользователя 
 - Настраиваем `.env`
 - Запускаем билд `docker-compose up -d --build`
