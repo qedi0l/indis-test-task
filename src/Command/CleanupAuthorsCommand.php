@@ -19,28 +19,29 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class CleanupAuthorsCommand extends Command
 {
 
-    private $em;
+    private $entityManager;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         parent::__construct();
-        $this->em = $em;
+        $this->entityManager = $entityManager;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        
-        $repository = $this->em->getRepository(Author::class);
-        $lazyAuthors = $repository->findAll();
-        
+        $lazyAuthors = $this->entityManager
+                    ->getRepository(Author::class)
+                    ->findAll();
+
         foreach ($lazyAuthors as $author) {
-            if(empty($author->getBooks()))
-            $this->em->remove($author);
+          if(empty($author->getBooks())){
+                $this->entityManager->remove($author);
+            }
         }
 
-        $this->em->flush();
+        $this->entityManager->flush();
 
-        $output->writeln('Deleted ' . count($lazyAuthors) . ' lazy authors.');
+        $output->writeln('Lazy authors deleted');
         
         return Command::SUCCESS;
     }
