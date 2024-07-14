@@ -16,28 +16,20 @@ class Book
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Title = null;
+    private ?string $title = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $ReleaseDate = null;
+    private ?string $releaseDate = null;
 
-    #[ORM\ManyToOne(inversedBy: 'Books')]
-    private ?Publisher $books_from_publisher = null;
+    #[ORM\ManyToOne(targetEntity: Publisher::class, inversedBy: 'book')]
+    private ?Publisher $publisher = null;
 
-    #[ORM\ManyToMany(targetEntity: Author::class, mappedBy: 'Books',orphanRemoval: true,cascade: ['persist'])]
-    private Collection $book_author;
+    #[ORM\ManyToMany(targetEntity: Author::class, inversedBy: 'book')]
+    #[ORM\JoinTable(name: 'book_author')]
+    private $authors;
 
-    #[ORM\ManyToOne(inversedBy: 'publisher_books')]
-    private ?Publisher $Publisher = null;
-
-    #[ORM\ManyToMany(targetEntity: Author::class, inversedBy: 'author_books',orphanRemoval: true,cascade: ['persist'])]
-    #[ORM\JoinColumn(nullable: true)]  
-    private Collection $Author;
-
-    public function __construct()
-    {
-        $this->book_author = new ArrayCollection();
-        $this->Author = new ArrayCollection();
+    public function __construct() {
+        $this->authors = new ArrayCollection();
     }
 
 
@@ -48,91 +40,50 @@ class Book
 
     public function getTitle(): ?string
     {
-        return $this->Title;
+        return $this->title;
     }
 
-    public function setTitle(string $Title): static
+    public function setTitle(string $title): static
     {
-        $this->Title = $Title;
+        $this->title = $title;
 
         return $this;
     }
 
     public function getReleaseDate(): ?string
     {
-        return $this->ReleaseDate;
+        return $this->releaseDate;
     }
 
-    public function setReleaseDate(?string $ReleaseDate): static
+    public function setReleaseDate(?string $releaseDate): static
     {
-        $this->ReleaseDate = $ReleaseDate;
-
-        return $this;
-    }
-
-    public function getBooksFromPublisher(): ?Publisher
-    {
-        return $this->books_from_publisher;
-    }
-
-    public function setBooksFromPublisher(?Publisher $books_from_publisher): static
-    {
-        $this->books_from_publisher = $books_from_publisher;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Author>
-     */
-    public function getBookAuthor(): Collection
-    {
-        return $this->book_author;
-    }
-
-    public function addBookAuthor($bookAuthor): static
-    {
-        if (isset($bookAuthor) && !$this->book_author->contains($bookAuthor)) {
-            $this->book_author->add($bookAuthor);
-            $bookAuthor->addBook($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBookAuthor($bookAuthor): static
-    {
-        if ($this->book_author->removeElement($bookAuthor)) {
-            $bookAuthor->removeBook($this);
-        }
+        $this->releaseDate = $releaseDate;
 
         return $this;
     }
 
     public function getPublisher(): ?Publisher
     {
-        return $this->Publisher;
+        return $this->publisher;
     }
 
-    public function setPublisher(?Publisher $Publisher): static
+    public function setPublisher(?Publisher $publisher): static
     {
-        $this->Publisher = $Publisher;
+        $this->publisher = $publisher;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, Author>
-     */
-    public function getAuthor(): Collection
+
+    public function getAuthors(): Collection
     {
-        return $this->Author;
+        return $this->authors;
     }
 
     public function addAuthor(Author $author): static
     {
-        if (!$this->Author->contains($author)) {
-            $this->Author->add($author);
+        if (!$this->authors->contains($author)) {
+            $this->authors->add($author);
         }
 
         return $this;
@@ -140,7 +91,7 @@ class Book
 
     public function removeAuthor(Author $author): static
     {
-        $this->Author->removeElement($author);
+        $this->authors->removeElement($author);
 
         return $this;
     }

@@ -16,21 +16,16 @@ class Author
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Name = null;
+    private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $Surname = null;
+    private ?string $surname = null;
 
-    #[ORM\ManyToMany(targetEntity: Book::class, inversedBy: 'book_author', orphanRemoval: true,cascade: ['persist'])]
-    private Collection $Books;
-
-    #[ORM\ManyToMany(targetEntity: Book::class, mappedBy: 'Author', orphanRemoval: true,cascade: ['persist'])]
-    private Collection $author_books;
-
-    public function __construct()
-    {
-        $this->Books = new ArrayCollection();
-        $this->author_books = new ArrayCollection();
+    #[ORM\ManyToMany(targetEntity: Book::class, mappedBy: 'authors')]
+    private $books;
+    
+    public function __construct() {
+        $this->books = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -40,40 +35,42 @@ class Author
 
     public function getName(): ?string
     {
-        return $this->Name;
+        return $this->name;
     }
 
-    public function setName(string $Name): static
+    public function setName(string $name): static
     {
-        $this->Name = $Name;
+        $this->name = $name;
 
         return $this;
     }
 
     public function getSurname(): ?string
     {
-        return $this->Surname;
+        return $this->surname;
     }
 
-    public function setSurname(?string $Surname): static
+    public function setSurname(?string $surname): static
     {
-        $this->Surname = $Surname;
+        $this->surname = $surname;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, Book>
+     * @return Collection<int, book>
      */
     public function getBooks(): Collection
     {
-        return $this->Books;
+        return $this->books;
     }
 
     public function addBook(Book $book): static
     {
-        if (!$this->Books->contains($book)) {
-            $this->Books->add($book);
+
+        if (!$this->books->contains($book)) {
+            $this->books->add($book);
+            $book->addAuthor($this);
         }
 
         return $this;
@@ -81,35 +78,10 @@ class Author
 
     public function removeBook(Book $book): static
     {
-        $this->Books->removeElement($book);
+        $this->books->removeElement($book);
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, Book>
-     */
-    public function getAuthorBooks(): Collection
-    {
-        return $this->author_books;
-    }
-
-    public function addAuthorBook(Book $authorBook): static
-    {
-        if (!$this->author_books->contains($authorBook)) {
-            $this->author_books->add($authorBook);
-            $authorBook->addAuthor($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAuthorBook(Book $authorBook): static
-    {
-        if ($this->author_books->removeElement($authorBook)) {
-            $authorBook->removeAuthor($this);
-        }
-
-        return $this;
-    }
+    
 }

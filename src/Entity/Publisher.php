@@ -16,21 +16,18 @@ class Publisher
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Name = null;
+    private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $Address = null;
+    private ?string $address = null;
 
-    #[ORM\OneToMany(targetEntity: Book::class, mappedBy: 'books_from_publisher',orphanRemoval: true,cascade: ['persist'])]
-    private Collection $Books;
-
-    #[ORM\OneToMany(targetEntity: Book::class, mappedBy: 'Publisher' ,orphanRemoval: true,cascade: ['persist'])]
-    private Collection $publisher_books;
+    #[ORM\OneToMany(targetEntity: Book::class, mappedBy: 'publisher' ,orphanRemoval: true,cascade: ['persist'])]
+    private Collection $books;
 
     public function __construct()
     {
-        $this->Books = new ArrayCollection();
-        $this->publisher_books = new ArrayCollection();
+        //$this->books = new ArrayCollection();
+        $this->books = new ArrayCollection();
     }
 
 
@@ -41,24 +38,24 @@ class Publisher
 
     public function getName(): ?string
     {
-        return $this->Name;
+        return $this->name;
     }
 
-    public function setName(string $Name): static
+    public function setName(string $name): static
     {
-        $this->Name = $Name;
+        $this->name = $name;
 
         return $this;
     }
 
     public function getAddress(): ?string
     {
-        return $this->Address;
+        return $this->address;
     }
 
-    public function setAddress(?string $Address): static
+    public function setAddress(?string $address): static
     {
-        $this->Address = $Address;
+        $this->address = $address;
 
         return $this;
     }
@@ -72,14 +69,14 @@ class Publisher
      */
     public function getBooks(): Collection
     {
-        return $this->Books;
+        return $this->books;
     }
 
     public function addBook(Book $book): static
     {
-        if (!$this->Books->contains($book)) {
-            $this->Books->add($book);
-            $book->setBooksFromPublisher($this);
+        if (!$this->books->contains($book)) {
+            $this->books->add($book);
+            $book->setPublisher($this);
         }
 
         return $this;
@@ -87,10 +84,9 @@ class Publisher
 
     public function removeBook(Book $book): static
     {
-        if ($this->Books->removeElement($book)) {
-            // set the owning side to null (unless already changed)
-            if ($book->getBooksFromPublisher() === $this) {
-                $book->setBooksFromPublisher(null);
+        if ($this->books->removeElement($book)) {
+            if ($book->getPublisher() === $this) {
+                $book->setPublisher(null);
             }
         }
 
@@ -102,25 +98,24 @@ class Publisher
      */
     public function getPublisherBooks(): Collection
     {
-        return $this->publisher_books;
+        return $this->books;
     }
 
-    public function addPublisherBook(Book $publisherBook): static
+    public function addPublisherBook(Book $books): static
     {
-        if (!$this->publisher_books->contains($publisherBook)) {
-            $this->publisher_books->add($publisherBook);
-            $publisherBook->setPublisher($this);
+        if (!$this->books->contains($books)) {
+            $this->books->add($books);
+            $books->setPublisher($this);
         }
 
         return $this;
     }
 
-    public function removePublisherBook(Book $publisherBook): static
+    public function removePublisherBook(Book $books): static
     {
-        if ($this->publisher_books->removeElement($publisherBook)) {
-            // set the owning side to null (unless already changed)
-            if ($publisherBook->getPublisher() === $this) {
-                $publisherBook->setPublisher(null);
+        if ($this->books->removeElement($books)) {
+            if ($books->getPublisher() === $this) {
+                $books->setPublisher(null);
             }
         }
 

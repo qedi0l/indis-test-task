@@ -10,22 +10,22 @@
 <summary>Взаимодействие с API:</summary>
 <details>
   
-- `book/create/{book_json}` Принимает JSON строку содержащую title, releaseDate, bookPublisher, bookAuthor.
-- `book/all` Возвращает JSON (поля книг, авторы, издатели).
-- `book/delete/{id}` Принимает id книги.
+- `book/create` Принимает title, releaseDate, bookPublisher, bookAuthor.
+- `book/all` Возвращает JSON - книга(поля книг, авторы, издатель).
+- `book/delete` Принимает id книги.
 
-- `author/create/{author_json}` Принимает JSON строку содержащую name, surname, books_ids[].
-- `author/delete/{id}` Принимает id автора.
+- `author/create` Принимает name, surname, booksIDs.
+- `author/delete` Принимает id автора.
 
-- `publisher/create/{publisher_json}` Принимает JSON строку содержащую name, address, books_ids[].
-- `publisher/update/{publisher_json}` Принимает JSON строку содержащую (опционально) name, (опционально) address, (опционально) books_ids[].
-- `publisher/delete/{id}` Принимает id издателя.
+- `publisher/create` Принимает name, address, booksIDs.
+- `publisher/update` Принимает (опционально) name, (опционально) address, (опционально) bookIDs.
+- `publisher/delete` Принимает id издателя.
 </details>
 
 <summary>Команды консоли:</summary>
 <details>
   
-  - `TestDataGen` Команда по наполнению БД тестовыми данными (несколько авторов/книг/издательств) 
+  - `doctrine:fixtures:load` Генерирует тестовые данные
   - `CleanupAuthorsCommand` Команда по удалению всех авторов, у которых нет книг
 
 </details>

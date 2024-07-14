@@ -34,7 +34,7 @@ class CleanupAuthorsCommand extends Command
         $lazyAuthors = $repository->findAll();
         
         foreach ($lazyAuthors as $author) {
-            if(empty($author->getAuthorBooks()))
+            if(empty($author->getBooks()))
             $this->em->remove($author);
         }
 

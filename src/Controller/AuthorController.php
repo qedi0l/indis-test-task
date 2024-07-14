@@ -27,7 +27,7 @@ class AuthorController extends AbstractController
             foreach ($books_ids as $book_id){
                 $bookRepository = $entityManager->getRepository(Book::class);
                 $book = $bookRepository->findOneById($book_id);
-                $author->addAuthorBook($book);
+                $author->addBook($book);
             }
         }
 
