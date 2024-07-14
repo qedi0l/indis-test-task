@@ -27,7 +27,6 @@ class BookController extends AbstractController
     public function getAll(EntityManagerInterface $entityManager, BookService $bookService): JsonResponse
     {
         $response = $bookService->allBooks($entityManager);
-        dd($response);
         return $this->json($response);
     }
 
