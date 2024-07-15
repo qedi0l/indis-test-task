@@ -25,17 +25,17 @@ class BookService
                     ->findOneById($bookPublisherID);
             $book->setPublisher($publisher);
         }
-        $t = [];
+
         if(!empty($bookAuthorIDs)){
             $authors = $entityManager
                 ->getRepository(Author::class)
                 ->findBy(['id' => $bookAuthorIDs]);
-            $t = $authors;
+
             foreach ($authors as $author){
                 $book->addAuthor($author);
             }
         }
-        dd($t);
+
         $entityManager->persist($book);
         $entityManager->flush();
 
