@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AuthorController extends AbstractController
 {
+    #[Route('/author/create',name:"book_create", methods: ['POST'])]
     public function create(EntityManagerInterface $entityManager, string $author_json): JsonResponse
     {
         $author_json = json_decode($author_json);
@@ -38,6 +39,8 @@ class AuthorController extends AbstractController
             'status' => 201,
         ]);
     }
+    
+    #[Route('/author/delete',name:"book_delete", methods: ['POST'])]
     public function delete(EntityManagerInterface $entityManager,int $id): JsonResponse
     {
         $author = $entityManager->getRepository(Author::class)->find($id);
